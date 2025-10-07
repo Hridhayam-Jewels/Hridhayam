@@ -20,7 +20,7 @@ const Collection = () => {
   });
   const [shouldResetFilters, setShouldResetFilters] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [gridCols, setGridCols] = useState(3); // Add grid column state
+  const [gridCols, setGridCols] = useState(4); // Add grid column state
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -119,6 +119,7 @@ const Collection = () => {
 
     // Grid col classes
     const gridClass = {
+      1: "grid-cols-1",
       2: "grid-cols-1 sm:grid-cols-2",
       3: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
       4: "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
@@ -127,9 +128,20 @@ const Collection = () => {
     return (
       <>
         <div className="flex flex-row-reverse pr-20 gap-2 mt-6 mb-6">
-          {/* 2 Cols SVG */}
+          {/* 1 Cols SVG - Only on mobile */}
           <button
-            className={`px-2 py-2 rounded border flex items-center justify-center ${gridCols === 2 ? "bg-black" : "bg-white"}`}
+            className={`px-2 py-2 rounded border items-center justify-center ${gridCols === 1 ? "bg-black" : "bg-white"} flex md:hidden`}
+            onClick={() => setGridCols(1)}
+            aria-label="1 columns"
+          >
+            <svg width="28" height="35" viewBox="0 0 28 20" fill="none">
+              <rect x="2" y="2" width="10" height="10" rx="2" fill={gridCols === 1 ? "#fff" : "#222"} />
+              <rect x="2" y="16" width="10" height="10" rx="2" fill={gridCols === 1 ? "#fff" : "#222"} />
+            </svg>
+          </button>
+          {/* 2 Cols SVG - Only on md and up */}
+          <button
+            className={`px-2 py-2 rounded border items-center justify-center ${gridCols === 2 ? "bg-black" : "bg-white"}`}
             onClick={() => setGridCols(2)}
             aria-label="2 columns"
           >
@@ -140,9 +152,9 @@ const Collection = () => {
               <rect x="16" y="16" width="10" height="10" rx="2" fill={gridCols === 2 ? "#fff" : "#222"}/>
             </svg>
           </button>
-          {/* 3 Cols SVG */}
+          {/* 3 Cols SVG - Only on lg and up */}
           <button
-            className={`px-2 py-2 rounded border flex items-center justify-center ${gridCols === 3 ? "bg-black" : "bg-white"}`}
+            className={`px-2 py-2 rounded border items-center justify-center ${gridCols === 3 ? "bg-black" : "bg-white"} hidden lg:flex`}
             onClick={() => setGridCols(3)}
             aria-label="3 columns"
           >
@@ -155,9 +167,9 @@ const Collection = () => {
               <rect x="26" y="14" width="8" height="8" rx="2" fill={gridCols === 3 ? "#fff" : "#222"} />
             </svg>
           </button>
-          {/* 4 Cols SVG */}
+          {/* 4 Cols SVG - Only on lg and up */}
           <button
-            className={`px-2 py-2 rounded border flex items-center justify-center ${gridCols === 4 ? "bg-black" : "bg-white"}`}
+            className={`px-2 py-2 rounded border items-center justify-center ${gridCols === 4 ? "bg-black" : "bg-white"} hidden lg:flex`}
             onClick={() => setGridCols(4)}
             aria-label="4 columns"
           >
@@ -173,7 +185,7 @@ const Collection = () => {
             </svg>
           </button>
         </div>
-        <div className={`py-12 max-w-6xl mx-auto grid gap-x-4 gap-y-8 ${gridClass}`}>
+        <div className={`py-12 max-w-6xl mx-auto grid gap-x-4 gap-y-8 ${gridClass} ${gridCols === 1 ? "justify-center" : ""}`}>
           {paginatedProducts.map((product, index) => (
             <ProductCard key={index} product={product} />
           ))}
