@@ -17,6 +17,7 @@ export default class AdminController {
                 price,
                 description,
                 category,
+                subCategory,
                 discountPercentage,
                 quantity
             } = req.body;
@@ -96,6 +97,7 @@ export default class AdminController {
                 image3: image3Upload.secure_url,
                 image4: image4Upload.secure_url,
                 category,
+                subCategory: subCategory || '',
                 discountPercentage: Number(discountPercentage) || 0,
                 inStock: parsedQuantity > 0,
                 quantity: parsedQuantity
@@ -169,6 +171,7 @@ export default class AdminController {
                 price,
                 description,
                 category,
+                subCategory,
                 discountPercentage,
                 inStock,
                 quantity
@@ -181,6 +184,7 @@ export default class AdminController {
                 price,
                 description,
                 category,
+                subCategory,
                 discountPercentage: Number(discountPercentage) || 0,
                 inStock: inStock === 'true',
                 quantity: Number(quantity) || 0
