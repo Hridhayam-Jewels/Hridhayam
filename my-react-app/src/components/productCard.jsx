@@ -61,24 +61,20 @@ function ProductCard({ product }) {
   };
 
   return (
-    <div className="w-60 bg-white shadow-md rounded-xl duration-500 hover:scale-105 hover:shadow-xl">
-      <Link to={`/${title}`} state={{ productId: id }} className="block">
-        <div className="group my-1.5 flex w-full max-w-xs flex-col overflow-hidden bg-white">
-          <div className="relative flex h-64 w-60 overflow-hidden">
+    <div className="bg-white shadow-md rounded-xl duration-500 sm:h-85 hover:scale-105 hover:shadow-xl sm:w-full md-w-1/2 md:max-w-[280px] md:mx-auto">
+      <Link to={`/${title}`} state={{ productId: id }} className="block w-full">
+        <div className="group my-1.5 flex w-full flex-col overflow-hidden bg-white">
+          <div className="relative flex h-40 sm:h-64 w-full overflow-hidden">
             {discountPercentage > 0 && (
-              <div className="absolute right-2 top-2 z-1">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-red-500 shadow-md animate-pulse">
-                  <span className="text-xs font-bold text-white">
-                    -{discountPercentage}%
-                  </span>
+              <div className="absolute right-2 top-2 z-10">
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-red-500 shadow-md animate-pulse">
+                  <span className="text-xs font-bold text-white">-{discountPercentage}%</span>
                 </div>
               </div>
             )}
-            <img className="absolute top-0 right-0 h-full w-60 object-cover rounded-t-xl"
-              src={imageNode}
-              alt="product image" />
+            <img className="absolute inset-0 h-full w-full object-cover rounded-t-xl" src={imageNode} alt="product image" />
 
-            <div className="absolute -right-16 bottom-0 mr-2 mb-4 space-y-2 transition-all duration-300 group-hover:right-0">
+            <div className="absolute -right-12 bottom-0 mr-2 mb-4 space-y-2 transition-all duration-300 group-hover:right-2">
               <button
                 onClick={handleAddToCart}
                 disabled={product.isPreOrder}
@@ -94,7 +90,7 @@ function ProductCard({ product }) {
               </button>
             </div>
           </div>
-          <div className="px-2 py-1">
+          <div className="px-2 py-2">
             <h5 className="text-sm text-center tracking-tight text-gray-500">{title}</h5>
             <div className="flex justify-center gap-2 items-center">
               <p>
