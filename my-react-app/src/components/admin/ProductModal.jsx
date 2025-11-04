@@ -8,12 +8,14 @@ const ProductModal = ({
   onSave,
   product,
   categories = [],
+  subcategories = [],
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     price: '',
     category: '',
+    subCategory: '',
     description: '',
     image: '',
     image2: '',
@@ -30,9 +32,13 @@ const ProductModal = ({
   });
   const [previewImage, setPreviewImage] = useState(null);
   const [newCategory, setNewCategory] = useState('');
+  const [newSubCategory, setNewSubCategory] = useState('');
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [filteredCategories, setFilteredCategories] = useState([]);
+  const [showSubSuggestions, setShowSubSuggestions] = useState(false);
+  const [filteredSubcategories, setFilteredSubcategories] = useState([]);
   const categoryInputRef = useRef(null);
+  const subCategoryInputRef = useRef(null);
 
   const isFormValid = () => {
     return (
@@ -55,6 +61,7 @@ const ProductModal = ({
         name: product.name || '',
         price: product.price || '',
         category: product.category || '',
+        subCategory: product.subCategory || '',
         description: product.description || '',
         image: product.image || '',
         image2: product.image2 || '',
@@ -71,12 +78,14 @@ const ProductModal = ({
       });
       setPreviewImage(product.image || null);
       setNewCategory(product.category || '');
+      setNewSubCategory(product.subCategory || '');
     } else {
       setFormData({
         id: null,
         name: '',
         price: '',
         category: '',
+        subCategory: '',
         description: '',
         image: '',
         image2: '',
@@ -93,6 +102,7 @@ const ProductModal = ({
       });
       setPreviewImage(null);
       setNewCategory('');
+      setNewSubCategory('');
     }
   }, [product]);
 
@@ -132,10 +142,25 @@ const ProductModal = ({
     setShowSuggestions(true);
   };
 
+  const handleSubCategoryInput = (value) => {
+    setNewSubCategory(value);
+    const filtered = subcategories.filter(sub =>
+      sub.toLowerCase().includes(value.toLowerCase())
+    );
+    setFilteredSubcategories(filtered);
+    setShowSubSuggestions(true);
+  };
+
   const handleCategorySelect = (category) => {
     setFormData({ ...formData, category: category });  // Fix: Update formData.category
     setNewCategory(category);
     setShowSuggestions(false);
+  };
+
+  const handleSubCategorySelect = (sub) => {
+    setFormData({ ...formData, subCategory: sub });
+    setNewSubCategory(sub);
+    setShowSubSuggestions(false);
   };
 
   const handleSubmit = async (e) => {
@@ -148,6 +173,7 @@ const ProductModal = ({
       formDataToSend.append('name', formData.name);
       formDataToSend.append('price', formData.price);
       formDataToSend.append('category', formData.category);
+      formDataToSend.append('subCategory', formData.subCategory);
       formDataToSend.append('description', formData.description);
       // Ensure discount is sent as a number, defaulting to 0 if invalid
       formDataToSend.append('discountPercentage', Number(formData.discountPercentage) || 0);
@@ -287,6 +313,44 @@ const ProductModal = ({
                           className="px-4 py-2 text-green-400 hover:bg-gray-800 cursor-pointer"
                         >
                           + Add "{newCategory}" as new category
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+                <div className="mb-4">
+                  <label className="block text-gray-700 text-sm font-bold mb-2">
+                    Subcategory
+                  </label>
+                  <input
+                    type="text"
+                    value={newSubCategory}
+                    onChange={(e) => handleSubCategoryInput(e.target.value)}
+                    onFocus={() => setShowSubSuggestions(true)}
+                    placeholder="Type to search or add new subcategory"
+                    className="w-full p-2 border rounded focus:ring-2 focus:ring-blue-500 text-gray-800"
+                    list="subcategories"
+                    ref={subCategoryInputRef}
+                  />
+                  {showSubSuggestions && (
+                    <div className="absolute z-10 w-64 mt-1 bg-white border rounded-md shadow-lg">
+                      {filteredSubcategories.length > 0 ? (
+                        filteredSubcategories.map((sub) => (
+                          <div
+                            key={sub}
+                            onMouseOut={() => setShowSubSuggestions(false)}
+                            onClick={() => handleSubCategorySelect(sub)}
+                            className="px-4 py-2 text-gray-800 hover:bg-gray-100 cursor-pointer"
+                          >
+                            {sub}
+                          </div>
+                        ))
+                      ) : (
+                        <div
+                          onClick={() => handleSubCategorySelect(newSubCategory)}
+                          className="px-4 py-2 text-green-600 hover:bg-gray-100 cursor-pointer"
+                        >
+                          + Add "{newSubCategory}" as new subcategory
                         </div>
                       )}
                     </div>
@@ -454,7 +518,8 @@ const ProductModal = ({
 };
 
 ProductModal.defaultProps = {
-  categories: []
+  categories: [],
+  subcategories: []
 };
 
 export default ProductModal;
