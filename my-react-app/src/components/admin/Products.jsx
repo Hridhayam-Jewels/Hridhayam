@@ -12,6 +12,7 @@ const Products = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState('');
   const [categories, setCategories] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [previewImage, setPreviewImage] = useState(null);
@@ -65,6 +66,8 @@ const Products = () => {
   useEffect(() => {
     const uniqueCategories = [...new Set(products.map(product => product.category))];
     setCategories(uniqueCategories);
+    const uniqueSubcategories = [...new Set(products.map(product => product.subCategory).filter(Boolean))];
+    setSubcategories(uniqueSubcategories);
   }, [products]);
 
   // Filter and paginate products
@@ -262,6 +265,7 @@ const Products = () => {
                   <th className="px-6 py-3 text-left text-sm font-semibold text-gray-800 uppercase tracking-wider">
                     Category
                   </th>
+                  <th className="px-6 py-3 text-left text-sm font-semibold text-gray-800 uppercase tracking-wider">Subcategories</th>
                   <th className="px-6 py-3 text-left text-sm font-semibold text-gray-800 uppercase tracking-wider">
                     Actions
                   </th>
@@ -307,6 +311,7 @@ const Products = () => {
                       </span>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-gray-800">{product.category}</td>
+                    <td className="px-4 py-2 text-gray-800">{product.subCategory || '-'}</td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex space-x-3">
                         <button
@@ -349,6 +354,7 @@ const Products = () => {
           product={selectedProduct}
           title={selectedProduct?.id ? "Edit Product" : "Add New Product"}
           categories={categories}
+          subcategories={subcategories}
         />
 
         <AlertDialog
