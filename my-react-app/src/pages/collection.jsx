@@ -120,7 +120,7 @@ const Collection = () => {
     // Grid col classes
     const gridClass = {
       1: "grid-cols-1",
-      2: "grid-cols-1 sm:grid-cols-2",
+      2: "grid-cols-2 sm:grid-cols-2",
       3: "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3",
       4: "grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4"
     }[gridCols];
@@ -130,7 +130,7 @@ const Collection = () => {
         <div className="flex flex-row-reverse pr-20 gap-2 mt-6 mb-6">
           {/* 1 Cols SVG - Only on mobile */}
           <button
-            className={`px-2 py-2 rounded border items-center justify-center ${gridCols === 1 ? "bg-black" : "bg-white"} flex md:hidden`}
+            className={`px-2 py-2 rounded border items-center justify-center ${gridCols === 1 ? "bg-black" : "bg-white"} md:hidden`}
             onClick={() => setGridCols(1)}
             aria-label="1 columns"
           >
